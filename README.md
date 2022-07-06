@@ -11,6 +11,6 @@ and now run all files in python and in last execute testMAX30102 file to get the
 
 
 for Temperature values download
-mlx90614
-testmlx
+mlx90614.py
+testmlx.py
 and run mlx90614 to execute and after that run testmlx for checking output
