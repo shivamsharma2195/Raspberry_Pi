@@ -1,0 +1,49 @@
+as we know that raspberry pi has updated their stack so now picamera stack is not woring new stack libcamera is getting used in linux now so as a result when we activate camera we get depricated camera feature warning so for that i have given the below solution
+please follow as instructed
+for using camera on new rasberry pi devices we need to do some changes in boot files so that new libcamera stack can be used easily
+"sudo nano /boot/config.txt"
+
+add following lines in code
+"camera_auto_detect=1
+dtoverlay=ov5647,cam0"
+while cam0 or cam1 based on connection and ov5647 is our camera module so you can set it as per your camera module as follow
+V1 camera (OV5647)=dtoverlay=ov5647
+V2 camera (IMX219)=dtoverlay=imx219
+HQ camera (IMX477)=dtoverlay=imx477
+Camera Module 3 (IMX708)=dtoverlay=imx708
+IMX290 and IMX327=dtoverlay=imx290,clock-frequency=74250000 or dtoverlay=imx290,clock-frequency=37125000 (both modules share the imx290 kernel driver; please refer to instructions from the module vendor for the correct frequency)
+IMX378=dtoverlay=imx378
+OV9281=dtoverlay=ov9281
+
+
+**** for camera test
+"libcamera-hello -t 0"
+or
+"libcamera-hello"
+or
+"libcamera-jpeg -o test.jpg"
+or
+"libcamera-jpeg -o test1080.jpg -t 5000 --width 1920 --height 1080"
+or
+"libcamera-still -o still-test.jpg"
+or
+"libcamera-still -e png -o still-test.png"
+or
+"libcamera-still --datetime"
+or
+"libcamera-vid -t 10000 -o test.h264"
+
+
+******for running video over local LAN on raspberry pi
+"libcamera-vid -t 60000 --width 1920 --height 1080 --codec h264 --inline --listen -o tcp://0.0.0.0:8888"
+
+and use VLC on other device to run video with same wifi connection using network stream and use this link
+"tcp/h264://192.168.1.201:8888" while the 192.168.1.201 is the ip address of pi also we can use "tcp/h264://"raspberrypi.local:8888" where raspberrypi is the local system name
+
+
+***** for streaming it to online website use following command
+"libcamera-vid --framerate 30 --nopreview --inline -t 0 --width 1920 --height 1080 --listen -o - | ffmpeg -i - -profile:v high -pix_fmt yuvj420p -level:v 4.1 -preset ultrafast -tune zerolatency -vcodec libx264 -r 10 -s 1920x1080 -f mpegts -flush_packets 0 rtmp://live-ingest.avstack.net:5222/app/27781b2f-8237-7afa-944f-d93dde02182d"
+or
+"libcamera-vid --framerate 15 --nopreview --inline -t 0 --width 240 --height 240 --listen -o - | ffmpeg -i - -profile:v high -pix_fmt yuvj420p -level:v 4.1 -preset ultrafast -tune zerolatency -vcodec libx264 -r 10 -s 240x240 -f flv -flvflags no_duration_filesize -flush_packets 0 rtmp://live-ingest.avstack.net:5222/app/27781b2f-8237-7afa-944f-d93dde02182d"
+while after rtmp use the website address as we are using rtmp protocol so using rtmp. you can also udp here for udp based websites
+
