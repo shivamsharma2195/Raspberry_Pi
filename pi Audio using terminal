@@ -1,0 +1,25 @@
+for using audio on raspberry pi we need to use the following commands on raspberry pi terminal
+
+
+******** for streaming audio over vlc 
+"cvlc -vvv alsa://hw:0,0 --sout '#transcode{acodec=mp3,ab=128}:rtp{mux=ts,dst=239.255.1.1,sdp=sap}'"
+for play open vlc and use network stream "rtp://239.255.1.1"
+or
+"cvlc -vvv alsa://plughw:1 --sout '#transcode{acodec=mp3,ab=64,channels=1}:standard{access=http,dst=0.0.0.0:8888/out.mp3}'"
+for this open vlc and use network streaming with "http://192.168.1.201:8888/out.mp3"
+
+in above commands hw:0,0 and plughw:1 are hardware selection so you can change the number like in my system hw:1,0 works and plughw:1 works better
+
+********for audio loopback or as megaphone to replay microphone audio over speaker directly
+"pactl load-module module-loopback latency_msec=1" for default mic selection
+or
+"pactl load-module module-loopback latency_msec=1 channel_map=left" for playing specific microphone audio (left or right)
+
+******** for recording audio over terminal
+"arecord --format=S16_LE --duration=5 --rate=32000 --file-type=raw name.wav"
+here we can change rate 32000 to 44100 or 48000 etc with duration
+
+****** to play from terminal
+"aplay name.wav" we can also set rate or format here in play only if sound is not clear
+
+
