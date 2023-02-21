@@ -23,7 +23,7 @@ or
 or
 "libcamera-jpeg -o test.jpg"
 or
-"libcamera-jpeg -o test1080.jpg -t 5000 --width 1920 --height 1080"
+"libcamera-jpeg -o test1080.jpg -t 5000 --width 1920 --height 1080" here t 5000 means 5second duration
 or
 "libcamera-still -o still-test.jpg"
 or
@@ -35,7 +35,7 @@ or
 
 
 ******for running video over local LAN on raspberry pi
-"libcamera-vid -t 60000 --width 1920 --height 1080 --codec h264 --inline --listen -o tcp://0.0.0.0:8888"
+"libcamera-vid -t 60000 --width 1920 --height 1080 --codec h264 --inline --listen -o tcp://0.0.0.0:8888" here t 60000 means 60 seconds duration
 
 and use VLC on other device to run video with same wifi connection using network stream and use this link
 "tcp/h264://192.168.1.201:8888" while the 192.168.1.201 is the ip address of pi also we can use "tcp/h264://"raspberrypi.local:8888" where raspberrypi is the local system name
